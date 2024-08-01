@@ -27,16 +27,27 @@ let gMeme = {
     lines: [
         {
             txt:'',
-            size:20,
-            color:'red'
+            size:5,
+            color:'black'
         }
     ]
 }
 
 let gKeywordSearchCountMap = {'funny': 0, 'cat':16, 'baby':12}
 
+
+function getMeme(){
+    return gMeme
+}
+
 function getImages(){
-    let imagesUrls = gImgs.map(img => img.url)
-    console.log(imagesUrls)
-    return imagesUrls
+    return gImgs
+}
+
+function getImageById(ImgId){
+    return gImgs.find(img => img.id === ImgId)
+}
+
+function updateGmemeText(text){
+    gMeme.lines[0].txt = text
 }
