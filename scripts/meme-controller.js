@@ -17,7 +17,7 @@ function renderMeme() {
     gCenter = { x: gCanvas.width / 2, y: gCanvas.height / 2}
 
     renderImage(imageUrl)
-    drawText(meme.lines[0].txt)
+    drawText()
 }
 
 function onTextInput(txt){
@@ -25,8 +25,17 @@ function onTextInput(txt){
     renderMeme()
 }
 
-function drawText(txt) {
-    console.log('txt',txt)
+function onChangeLineColor(color){
+    updateGmemeLineColor(color)
+    renderMeme()
+}
+
+function drawText() {
+    let meme = getMeme()
+
+    const txt = meme.lines[0].txt
+    const color = meme.lines[0].color
+
     gCtx.beginPath()
     const pos = {}
 
@@ -39,7 +48,7 @@ function drawText(txt) {
     gCtx.textAlign = 'center'
     gCtx.font = '30px Arial'
 
-    gCtx.strokeStyle = 'red'
+    gCtx.strokeStyle = color
     gCtx.fillStyle = 'pink' 
 
     gCtx.fillText(txt, pos.x, pos.y) 
