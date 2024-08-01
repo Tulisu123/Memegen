@@ -55,3 +55,11 @@ function updateGmemeText(text){
 function updateGmemeLineColor(color){
     gMeme.lines[0].color = `${color}`
 }
+
+function increaseFontSize(){
+    gMeme.lines[0].size += 5
+}
+
+function decreaseFontSize(){
+    gMeme.lines[0].size -= 5
+}

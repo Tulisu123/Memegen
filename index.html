@@ -40,8 +40,8 @@
                     <button class="trash fa-solid fa-trash"></button>
                 </div>
                 <div class="row-three-container">
-                    <button class="a-plus">A+</button>
-                    <button class="a-minus">A-</button>
+                    <button class="a-plus" onclick="onIncreaseFont()">A+</button>
+                    <button class="a-minus" onclick="onDecreaseFont()">A-</button>
                     <button class="text-left fa-solid fa-align-left"></button>
                     <button class="text-middle fa-solid fa-align-center"></button>
                     <button class="text-right fa-solid fa-align-right"></button>
@@ -49,7 +49,8 @@
                         <option value="arial">Arial</option>
                         <option value="times">Times new Roman</option>
                     </select>
-                    <input type="color" oninput="onChangeLineColor(this.value)">
+                    <!-- <label for="outerlinecolor" class="fa-solid fa-brush"></label> -->
+                    <input id="outerlinecolor" type="color" oninput="onChangeLineColor(this.value)">
                     <button class="fa-solid fa-fill"></button>
                 </div>
                 <div class="row-four-container">
