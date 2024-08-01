@@ -1,0 +1,39 @@
+.grid{
+    display: grid;
+}
+
+.flex{
+    display: flex;
+}
+
+.align-center{
+    align-items: center;
+}
+
+.justify-center{
+    justify-content: center;
+}
+
+.space-between{
+    justify-content: space-between;
+}
+
+.display-none{
+    display: none;
+}
+
+.display-block{
+    display: block;
+}
+
+.row-one{
+    grid-column: 1
+}
+
+.row-two{
+    grid-column: 2;
+}
+
+.row-three{
+    grid-column: 3;
+}

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme generator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/372b3b0995.js" crossorigin="anonymous"></script>
+</head>
+
+<body onload="onInit()" class="main-layout">
+    <header class="main-layout full">
+        <div class="header-content flex align-center space-between">
+            <div class="logo">Meme-gen</div>
+            <nav>
+                <a onclick="moveToGallery()" href="#">Gallery</a> <span class="seperate">|</span>
+                <a href="#">Saved Memes</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="main-content grid">
+        <div class="gallery-container grid">
+            <!-- Gallery content here -->
+        </div>
+
+
+        <section class="grid edit-view display-none">
+            <div class="canvas-container display-none">
+                <canvas></canvas>
+            </div>
+            <div class="actions grid display-none">
+                <input class='row-one' type="text" placeholder="Your text">
+                <button class="plus fa-solid fa-plus row-two"></button>
+                <button class="line-selector row-two fa-duotone fa-solid fa-up-down"></button>
+                <button class="trash fa-solid fa-trash row-two"></button>
+                <button class="a-plus">A+</button>
+                <button class="a-minus">A-</button>
+                <button class="text-left fa-solid fa-align-left"></button>
+                <button class="text-middle fa-solid fa-align-center"></button>
+                <button class="text-right fa-solid fa-align-right"></button>
+                <select id="selectbar" name="selectbar">
+                    <option value="arial">Arial</option>
+                    <option value="times">Times new Roman</option>
+                </select>
+            </div>
+        </section>
+    </section>
+
+    <script src="/scripts/utils.js"></script>
+    <script src="/scripts/main.js"></script>
+    <script src="/scripts/gallery-controller.js"></script>
+    <script src="/scripts/gallery-service.js"></script>
+    <script src="/scripts/meme-controller.js"></script>
+    <script src="/scripts/meme-service.js"></script>
+</body>
+
+</html>

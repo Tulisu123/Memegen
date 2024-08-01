@@ -1,0 +1,55 @@
+/*Gallery*/
+.main-content .gallery-container{
+    padding-bottom: 3%;
+    grid-column: 1/-1;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+    gap:1em;
+    
+}
+
+.main-content .gallery-container img{
+    justify-self: center;
+    width:200px;
+    height: 200px;
+    object-fit: cover;
+    cursor: pointer;
+
+    border-radius: 5px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+
+}
+
+.main-content .gallery-container img:hover{
+    scale: 1.05;
+}
+
+
+
+/*edit-view*/
+
+/*Canvas*/
+.main-content{
+    grid-column: 2;
+    grid-template-columns: repeat(2, 50%);
+    margin-top: 3%;
+}
+
+.main-content canvas{
+    border: 1px solid black;
+    grid-column: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.main-content .edit-view{
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    grid-column: 1/-1;
+}
+
+.edit-view .actions{
+    grid-template-rows: 1fr 1fr 2fr 1fr;
+    grid-column: 2;
+    margin-left: 20px;
+}
