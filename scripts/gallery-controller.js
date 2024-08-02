@@ -4,7 +4,7 @@ function renderImages(){
     const imagesUrls = getImages()
     let elGalleryContainer = document.querySelector('.gallery-container')
     var strHtml = imagesUrls.map(img =>
-         `<img onclick="onSelectImage('${img.id}'); renderImage('${img.url}')" src="${img.url}">`
+         `<img onclick="onSelectImage('${img.id}'); renderMeme()" src="${img.url}">`
         )
          .join('')
 

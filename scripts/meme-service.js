@@ -1,5 +1,4 @@
 'use strict'
-
 let gImgs = [
     {id: getRandomId(), url: 'images/1.jpg', keywords: ['funny', 'politics']},
     {id: getRandomId(), url: 'images/2.jpg', keywords: ['animal', 'cute']},
@@ -19,16 +18,20 @@ let gImgs = [
     {id: getRandomId(), url: 'images/16.jpg', keywords: ['funny', 'movies']},
     {id: getRandomId(), url: 'images/17.jpg', keywords: ['funny', 'politics']},
     {id: getRandomId(), url: 'images/18.jpg', keywords: ['funny', 'movies']}
-];
+]
 
 let gMeme = {
     selectedImgId: 1,
     selectedLineIdx:0,
     lines: [
         {
-            txt:'',
-            size:5,
-            color:'black'
+            txt:'Your text',
+            size:50,
+            color:'black',
+            pos:{
+                y:50,
+                x:0
+            }
         }
     ]
 }
@@ -49,17 +52,31 @@ function getImageById(ImgId){
 }
 
 function updateGmemeText(text){
-    gMeme.lines[0].txt = text
+    gMeme.lines[gMeme.selectedLineIdx].txt = text
 }
 
 function updateGmemeLineColor(color){
-    gMeme.lines[0].color = `${color}`
+    gMeme.lines[gMeme.selectedLineIdx].color = `${color}`
 }
 
 function increaseFontSize(){
-    gMeme.lines[0].size += 5
+    gMeme.lines[gMeme.selectedLineIdx].size += 5
 }
 
 function decreaseFontSize(){
-    gMeme.lines[0].size -= 5
+    gMeme.lines[gMeme.selectedLineIdx].size -= 5
+}
+
+function addLine(posX,posY,txt = 'Enter text'){
+    gMeme.selectedLineIdx++
+    gMeme.lines.push({
+        txt,
+        size:50,
+        color:'black',
+        pos:{
+            x: posX,
+            y: posY
+        }
+    })
+    console.log(gMeme.lines)
 }
