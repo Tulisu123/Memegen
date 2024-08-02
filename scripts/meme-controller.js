@@ -19,6 +19,8 @@ function renderMeme() {
     let selectedLine = meme.lines[meme.selectedLineIdx]
     renderImage(imageUrl)
     
+    console.log('selected line in render', meme.selectedLineIdx)
+
     meme.lines.forEach((line)=>{
          drawText(line)
         if(line === selectedLine) markSelectedLine(line)
@@ -56,15 +58,18 @@ function resizeCanvas() {
     gCanvas.width = elContainer.clientWidth
 }
 
+function onChangeSelectedLine(){
+    let meme = getMeme()
+    if(meme.lines.length < 2) return
 
-function clearCanvas() {
-    gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height)
-}
+    meme.selectedLineIdx++
+    if(meme.selectedLineIdx === meme.lines.length) meme.selectedLineIdx = 0
 
-function moveToGallery() {
-    document.querySelector('.gallery-container').classList.remove('display-none');
-    document.querySelector('.edit-view').classList.remove('display-block');
-    document.querySelector('.edit-view').classList.add('display-none');
+    let selectedLine = meme.lines[meme.selectedLineIdx]
+
+    renderMeme()
+    markSelectedLine(selectedLine)
+    
 }
 
 function markSelectedLine(line) {
@@ -74,7 +79,7 @@ function markSelectedLine(line) {
 
     const textWidth = gCtx.measureText(txt).width;
     const paddingX = 10; // Horizontal padding around the text
-    const paddingY = 20; // Vertical padding around the text
+    const paddingY = 10; // Vertical padding around the text
 
     const rectX = pos.x - textWidth / 2 - paddingX;
     const rectY = pos.y - fontSize / 2 - paddingY / 2;
@@ -82,8 +87,8 @@ function markSelectedLine(line) {
     const rectHeight = fontSize + paddingY;
 
     gCtx.beginPath();
-    gCtx.fillStyle = 'rgba(0, 0, 0, 0.5)'; // Semi-transparent black
-    gCtx.fillRect(rectX, rectY, rectWidth, rectHeight);
+    gCtx.fillStyle = 'rgba(0, 0, 0, 1)'; // Semi-transparent black
+    gCtx.strokeRect(rectX, rectY, rectWidth, rectHeight);
     gCtx.closePath();
 }
 
@@ -92,7 +97,21 @@ function onTextInput(txt){
     renderMeme()
 }
 
+function onDeleteLine(){
+    console.log('delete')
+    let meme = getMeme()
+    let selectedLineIdx = meme.selectedLineIdx
+    meme.lines.splice(selectedLineIdx,1)
+    meme.selectedLineIdx = 0
+    console.log('line index', selectedLineIdx)
+    renderMeme()
+
+}
+
 function onAddLine() {
+    let meme = getMeme()
+    meme.selectedLineIdx = meme.lines.length-1
+
     const posX = gCanvas.width / 2
     const posY = getPosY()
     addLine(posX, posY)
@@ -125,4 +144,14 @@ function getPosY(){
         positionY = lastLine.pos.y + 50
     }
     return positionY
+}
+
+function moveToGallery() {
+    document.querySelector('.gallery-container').classList.remove('display-none');
+    document.querySelector('.edit-view').classList.remove('display-block');
+    document.querySelector('.edit-view').classList.add('display-none');
+}
+
+function clearCanvas() {
+    gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height)
 }
