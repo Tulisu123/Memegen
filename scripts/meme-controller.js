@@ -18,14 +18,13 @@ function renderMeme(removeMark = false) {
     let { url: imageUrl } = getImageById(meme.selectedImgId)
     let selectedLine = meme.lines[meme.selectedLineIdx]
     renderImage(imageUrl)
+    
+    console.log('selected line in render', meme.selectedLineIdx)
 
-    console.log('selected line:', meme.selectedLineIdx)
-    meme.lines.forEach((line) => {
-        drawText(line)
+    meme.lines.forEach((line)=>{
+         drawText(line)
+        if(line === selectedLine) markSelectedLine(line)
     })
-    if (!removeMark){
-        markSelectedLine(selectedLine)
-    }
 }
 
 
@@ -34,8 +33,7 @@ function drawText(line) {
     document.querySelector('.row-one-container input').value = line.txt
     const fontSize = line.size
     const txt = line.txt
-    const lineColor = line.lineColor
-    const fillColor = line.fillColor
+    const color = line.color
 
     gCtx.beginPath()
 
