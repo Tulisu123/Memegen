@@ -4,52 +4,57 @@ let gCanvas = document.querySelector('canvas')
 let gCtx = gCanvas.getContext('2d')
 let gCenter
 
-function renderImage(imgSource){
+function renderImage(imgSource) {
     const img = new Image()
     img.src = `${imgSource}`
     gCanvas.height = (img.naturalHeight / img.naturalWidth) * gCanvas.width
-    gCtx.drawImage(img,0,0,gCanvas.width, gCanvas.height)
+    gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height)
 }
 
 function renderMeme() {
     let meme = getMeme()
-    gCenter = { x: gCanvas.width / 2, y: gCanvas.height / 2}
+    gCenter = { x: gCanvas.width / 2, y: gCanvas.height / 2 }
 
-    let {url: imageUrl} = getImageById(meme.selectedImgId)
+    let { url: imageUrl } = getImageById(meme.selectedImgId)
     let selectedLine = meme.lines[meme.selectedLineIdx]
     renderImage(imageUrl)
-    
-    console.log('selected line in render', meme.selectedLineIdx)
 
-    meme.lines.forEach((line)=>{
-         drawText(line)
-        if(line === selectedLine) markSelectedLine(line)
+    console.log('selected line in render', meme.selectedLineIdx)
+    meme.lines.forEach((line) => {
+        drawText(line)
     })
+
+    markSelectedLine(selectedLine)
 }
+
 
 
 function drawText(line) {
     document.querySelector('.row-one-container input').value = line.txt
     const fontSize = line.size
     const txt = line.txt
-    const color = line.color
+    const lineColor = line.lineColor
+    console.log('lineColor', lineColor)
+    const fillColor = line.fillColor
+    console.log('fillColor', fillColor)
 
     gCtx.beginPath()
 
     const pos = {}
     pos.x = gCenter.x
     pos.y = line.pos.y
-    
-    gCtx.lineWidth = 3
+
+    gCtx.lineWidth = 1.5
     gCtx.textBaseline = 'middle'
     gCtx.textAlign = 'center'
     gCtx.font = `${fontSize}px Arial`
 
-    gCtx.strokeStyle = color
-    gCtx.fillStyle = 'pink'
+    gCtx.strokeStyle = lineColor
+    gCtx.fillStyle = fillColor
 
     gCtx.fillText(txt, pos.x, pos.y)
     gCtx.strokeText(txt, pos.x, pos.y)
+    gCtx.closePath();
 }
 
 
@@ -58,18 +63,17 @@ function resizeCanvas() {
     gCanvas.width = elContainer.clientWidth
 }
 
-function onChangeSelectedLine(){
+function onChangeSelectedLine() {
     let meme = getMeme()
-    if(meme.lines.length < 2) return
+    if (meme.lines.length < 2) return
 
     meme.selectedLineIdx++
-    if(meme.selectedLineIdx === meme.lines.length) meme.selectedLineIdx = 0
+    if (meme.selectedLineIdx === meme.lines.length) meme.selectedLineIdx = 0
 
     let selectedLine = meme.lines[meme.selectedLineIdx]
 
-    renderMeme()
     markSelectedLine(selectedLine)
-    
+    renderMeme()
 }
 
 function markSelectedLine(line) {
@@ -78,8 +82,8 @@ function markSelectedLine(line) {
     const pos = { x: gCenter.x, y: line.pos.y };
 
     const textWidth = gCtx.measureText(txt).width;
-    const paddingX = 10; // Horizontal padding around the text
-    const paddingY = 10; // Vertical padding around the text
+    const paddingX = 10;
+    const paddingY = 10;
 
     const rectX = pos.x - textWidth / 2 - paddingX;
     const rectY = pos.y - fontSize / 2 - paddingY / 2;
@@ -87,60 +91,65 @@ function markSelectedLine(line) {
     const rectHeight = fontSize + paddingY;
 
     gCtx.beginPath();
-    gCtx.fillStyle = 'rgba(0, 0, 0, 1)'; // Semi-transparent black
+    gCtx.fillStyle = 'black';
+    gCtx.strokeStyle = 'black';
     gCtx.strokeRect(rectX, rectY, rectWidth, rectHeight);
     gCtx.closePath();
 }
 
-function onTextInput(txt){
+function onTextInput(txt) {
     updateGmemeText(txt)
     renderMeme()
 }
 
-function onDeleteLine(){
-    console.log('delete')
+function onDeleteLine() {
     let meme = getMeme()
     let selectedLineIdx = meme.selectedLineIdx
-    meme.lines.splice(selectedLineIdx,1)
-    meme.selectedLineIdx = 0
-    console.log('line index', selectedLineIdx)
-    renderMeme()
 
+    meme.lines.splice(selectedLineIdx, 1)
+    meme.selectedLineIdx = 0
+
+    renderMeme()
 }
 
 function onAddLine() {
     let meme = getMeme()
-    meme.selectedLineIdx = meme.lines.length-1
+    meme.selectedLineIdx = meme.lines.length - 1
 
     const posX = gCanvas.width / 2
     const posY = getPosY()
     addLine(posX, posY)
-    renderMeme() 
+    renderMeme()
 }
 
-function onChangeLineColor(color){
+function onChangeLineColor(color) {
     updateGmemeLineColor(color)
     renderMeme()
 }
 
-function onIncreaseFont(){
+function onChangeFillColor(color) {
+    updateGmemeFillColor(color);
+    renderMeme()
+}
+
+function onIncreaseFont() {
     increaseFontSize()
     renderMeme()
 }
 
-function onDecreaseFont(){
+function onDecreaseFont() {
     decreaseFontSize()
     renderMeme()
 }
 
-function getPosY(){
+function getPosY() {
     let meme = getMeme()
     let positionY
 
-    if (meme.lines.length === 0){
+    if (meme.lines.length === 0) {
         positionY = 50
-    }else{
-        const lastLine = meme.lines[meme.lines.length -1]
+    } else {
+        const lastLine = meme.lines[meme.lines.length - 1]
         positionY = lastLine.pos.y + 50
     }
     return positionY
