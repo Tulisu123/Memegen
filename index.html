@@ -36,7 +36,8 @@
                 </div>
                 <div class="row-two-continer">
                     <button class="plus fa-solid fa-plus" onclick="onAddLine()"></button>
-                    <button class="line-selector fa-duotone fa-solid fa-up-down" onclick="onChangeSelectedLine()"></button>
+                    <button class="line-selector fa-duotone fa-solid fa-up-down"
+                        onclick="onChangeSelectedLine()"></button>
                     <button class="trash fa-solid fa-trash" onclick="onDeleteLine()"></button>
                 </div>
                 <div class="row-three-container">
@@ -49,9 +50,10 @@
                         <option value="arial">Arial</option>
                         <option value="times">Times new Roman</option>
                     </select>
-                    <!-- <label for="outerlinecolor" class="fa-solid fa-brush"></label> -->
-                    <input id="outerlinecolor" type="color" oninput="onChangeLineColor(this.value)">
-                    <button class="fa-solid fa-fill"></button>
+                    <label for="colorInput" class="fa-solid fa-brush"></label>
+                    <input type="color" id="colorInput" class="color-input" oninput="onChangeLineColor(this.value)">
+                    <label for="fillInput" class="fa-solid fa-fill"></label>
+                    <input type="color" id="fillInput" class="color-input" oninput="onChangeFillColor(this.value)">
                 </div>
                 <div class="row-four-container">
                     <button class="save">Save</button>

@@ -26,8 +26,9 @@ let gMeme = {
     lines: [
         {
             txt:'Your text',
-            size:50,
-            color:'black',
+            size:30,
+            lineColor:'black',
+            fillColor:'black',
             pos:{
                 y:50,
                 x:0
@@ -55,8 +56,12 @@ function updateGmemeText(text){
     gMeme.lines[gMeme.selectedLineIdx].txt = text
 }
 
-function updateGmemeLineColor(color){
-    gMeme.lines[gMeme.selectedLineIdx].color = `${color}`
+function updateGmemeLineColor(lineColor){
+    gMeme.lines[gMeme.selectedLineIdx].lineColor = `${lineColor}`
+}
+
+function updateGmemeFillColor(fillColor){
+    gMeme.lines[gMeme.selectedLineIdx].fillColor = `${fillColor}`
 }
 
 function increaseFontSize(){
@@ -71,12 +76,12 @@ function addLine(posX,posY,txt = 'Enter text'){
     gMeme.selectedLineIdx++
     gMeme.lines.push({
         txt,
-        size:50,
-        color:'black',
+        size:30,
+        lineColor:'black',
+        fillColor:'black',
         pos:{
             x: posX,
             y: posY
         }
     })
-    console.log(gMeme.lines)
 }
