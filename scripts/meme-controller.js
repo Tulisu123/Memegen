@@ -153,6 +153,7 @@ function moveToGallery() {
 }
 
 function clearCanvas() {
+    console.log('c')
     gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height)
 }
 
@@ -248,6 +249,8 @@ function addListeners(){
 }
 
 
+
+
 /////dragging impl
 function addDragListeners(){
     gCanvas.addEventListener('mousedown', onMouseDown)
@@ -267,7 +270,7 @@ function onMouseDown(event) {
         let meme = getMeme()
         meme.selectedLineIdx = selectedLineIdx
         dragStartPos = { x: mouseX, y: mouseY }
-        selectedLinePos = { ...meme.lines[selectedLineIdx].pos }
+        selectedLinePos = { ...meme.lines[selectedLineIdx].pos } //creates a transparent variable 
     }
 }
 

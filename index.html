@@ -15,7 +15,7 @@
             <div class="logo">Meme-gen</div>
             <nav>
                 <a onclick="moveToGallery()" href="#">Gallery</a> <span class="seperate">|</span>
-                <a href="#">Saved Memes</a>
+                <a onclick="moveToSavedMemes()">Saved Memes</a>
             </nav>
         </div>
     </header>
@@ -47,6 +47,7 @@
                     <button class="text-middle fa-solid fa-align-center" onclick="onAlignCenter()"></button>
                     <button class="text-right fa-solid fa-align-right" onclick="onAlignRight()"></button>
                     <select id="selectbar" name="selectbar">
+                        <option value="impact">Impact</option>
                         <option value="arial">Arial</option>
                         <option value="times">Times new Roman</option>
                     </select>
@@ -56,20 +57,26 @@
                     <input type="color" id="fillInput" class="color-input" oninput="onChangeFillColor(this.value)">
                 </div>
                 <div class="row-four-container">
-                    <button class="save">Save</button>
+                    <button class="save" onclick="saveMemeToLocalStorage()">Save</button>
                     <button class="share">Share</button>
                     <button class="download ">Download</button>
                 </div>
+            </div>
+        </section>
 
+        <section class="saved-meme display-none">
+            <div class="saved-memes-container grid">
+                <!-- Saved memes here content here -->
             </div>
         </section>
     </section>
 
-    <script src="/scripts/utils.js"></script>
-    <script src="/scripts/main.js"></script>
-    <script src="/scripts/gallery-controller.js"></script>
-    <script src="/scripts/gallery-service.js"></script>
-    <script src="/scripts/meme-controller.js"></script>
-    <script src="/scripts/meme-service.js"></script>
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="scripts/gallery-controller.js"></script>
+    <script src="scripts/gallery-service.js"></script>
+    <script src="scripts/meme-controller.js"></script>
+    <script src="scripts/meme-service.js"></script>
+    <script src="scripts/saved-memes.js"></script>
 </body>
 </html>
