@@ -38,15 +38,14 @@
 }
 
 .main-content .canvas-container{
-    height: 70%;
-    width: 80%;
+    height: 100%;
+    width:  100;
     grid-column: 1;
+    background-color: aquamarine;
 }
 
 .main-content canvas{
     border: 1px solid black;
-    width: 100%;
-    height: 100%;
 }
 
 .edit-view .actions{
