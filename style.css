@@ -1,7 +1,7 @@
-@import url(styles/helpers.css);
-@import url(styles/typograpgy.css);
-@import url(styles/base.css);
+@import url("styles/helpers.css");
+@import url("styles/typograpgy.css");
+@import url("styles/base.css");
 
-@import url(styles/cmps/main-content.css);
-@import url(styles/cmps/main-header.css);
-@import url(styles/cmps/main-layout.css);
+@import url("styles/cmps/main-content.css");
+@import url("styles/cmps/main-header.css");
+@import url("styles/cmps/main-layout.css");

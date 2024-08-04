@@ -4,14 +4,19 @@ let gCanvas
 let gCtx
 let gCenter
 
+let isDragging = false;
+let dragStartPos = { x: 0, y: 0 };
+let selectedLinePos = { x: 0, y: 0 };
+
+
 function renderEditView(){
     gCanvas = document.querySelector('canvas')
     gCtx = gCanvas.getContext('2d')
-
+    addDragListeners()
     addListeners()
     resizeCanvas()
+    onAddLine()
     renderMeme()
-    
 }
 
 function resizeCanvas() {
@@ -19,9 +24,8 @@ function resizeCanvas() {
     console.log('Container Size:', elContainer.clientWidth, elContainer.clientHeight);
 
     gCanvas.width = elContainer.clientWidth 
-    gCanvas.height = elContainer.clientHeight 
+    gCanvas.height = elContainer.clientHeight
 }
-
 
 function renderImage(imgSource) {
     const img = new Image()
@@ -30,28 +34,26 @@ function renderImage(imgSource) {
     gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height)
 }
 
-
 function renderMeme(removeMark = false) {
     let meme = getMeme();
-    gCenter = { x: gCanvas.width / 2, y: gCanvas.height / 2 };
+    
+    gCenter = { x: gCanvas.width / 2, y: gCanvas.height / 2 }
 
-    let { url: imageUrl } = getImageById(meme.selectedImgId);
-    let selectedLine = meme.lines[meme.selectedLineIdx];
-    console.log('selected line in render:', meme.selectedLineIdx)
-
+    let { url: imageUrl } = getImageById(meme.selectedImgId)
+    let selectedLine = meme.lines[meme.selectedLineIdx]
+    
+    console.log('selected line:', selectedLine)
     renderImage(imageUrl);
     updateActions(selectedLine);
     
     meme.lines.forEach((line) => {
         drawText(line);
-    });
+    })
 
     if (!removeMark && selectedLine) {
         markSelectedLine(selectedLine);
     }
 }
-
-
 
 function drawText(line) {
     const fontSize = line.size
@@ -59,11 +61,10 @@ function drawText(line) {
     const lineColor = line.lineColor
     const fillColor = line.fillColor
 
-
     gCtx.beginPath()
 
     const pos = {}
-    pos.x = gCenter.x
+    pos.x = line.pos.x
     pos.y = line.pos.y
 
     gCtx.lineWidth = 1.5
@@ -99,7 +100,7 @@ function updateActions(line){
 function markSelectedLine(line) {
     const fontSize = line.size;
     const txt = line.txt;
-    const pos = { x: gCenter.x, y: line.pos.y };
+    const pos = { x: line.pos.x, y: line.pos.y };
 
     const textWidth = gCtx.measureText(txt).width;
     const paddingX = 10;
@@ -108,7 +109,7 @@ function markSelectedLine(line) {
     const rectX = pos.x - textWidth / 2 - paddingX;
     const rectY = pos.y - fontSize / 2 - paddingY / 2;
     const rectWidth = textWidth + paddingX * 2;
-    const rectHeight = fontSize + paddingY;
+    const rectHeight = fontSize + paddingY 
     console.log('marking . .. . . ')
     gCtx.beginPath();
     gCtx.fillStyle = 'black';
@@ -185,10 +186,27 @@ function onDecreaseFont() {
     renderMeme()
 }
 
+function onAlignLeft(){
+    alignLeft()
+    renderMeme()
+}
+
+function onAlignCenter(){
+    alignCenter(gCanvas.width/2)
+    renderMeme()
+}
+
+function onAlignRight(){
+    alignRight()
+    renderMeme()
+}
+
 function getLinePos(x, y) {
     let meme = getMeme();
     for (let i = 0; i < meme.lines.length; i++) {
         let line = meme.lines[i];
+
+        console.log('line poses',line.pos.x, line.pos.y)
 
         const textWidth = gCtx.measureText(line.txt).width;
         const padding = 10;
@@ -196,6 +214,7 @@ function getLinePos(x, y) {
         const rectY = line.pos.y - line.size / 2 - padding; // Adjusted to center text vertically
         const rectWidth = textWidth + padding * 2;
         const rectHeight = line.size + padding * 2;
+
 
         if (x >= rectX && x <= rectX + rectWidth && y >= rectY && y <= rectY + rectHeight) {
             return i;
@@ -214,7 +233,7 @@ function addListeners(){
         let mouseY = event.clientY - gRect.top
     
         const selectedLineIdx = getLinePos(mouseX, mouseY)
-        
+        console.log('selectedLine in listener', selectedLineIdx)
         if (selectedLineIdx !== null) {
             let meme = getMeme();
             meme.selectedLineIdx = selectedLineIdx
@@ -226,4 +245,51 @@ function addListeners(){
     })
 
     window.addEventListener('resize',resizeCanvas())
+}
+
+
+/////dragging impl
+function addDragListeners(){
+    gCanvas.addEventListener('mousedown', onMouseDown)
+    gCanvas.addEventListener('mousemove', onMouseMove)
+    gCanvas.addEventListener('mouseup', onMouseUp)
+}
+
+function onMouseDown(event) {
+    const gRect = gCanvas.getBoundingClientRect()
+
+    const mouseX = event.clientX - gRect.left
+    const mouseY = event.clientY - gRect.top
+
+    const selectedLineIdx = getLinePos(mouseX, mouseY)
+    if (selectedLineIdx !== null) {
+        isDragging = true
+        let meme = getMeme()
+        meme.selectedLineIdx = selectedLineIdx
+        dragStartPos = { x: mouseX, y: mouseY }
+        selectedLinePos = { ...meme.lines[selectedLineIdx].pos }
+    }
+}
+
+function onMouseMove(event) {
+    if (!isDragging) return
+
+    const gRect = gCanvas.getBoundingClientRect()
+
+    const mouseX = event.clientX - gRect.left
+    const mouseY = event.clientY - gRect.top
+
+    const dx = mouseX - dragStartPos.x
+    const dy = mouseY - dragStartPos.y
+
+    let meme = getMeme()
+    const line = meme.lines[meme.selectedLineIdx]
+    line.pos.x = selectedLinePos.x + dx
+    line.pos.y = selectedLinePos.y + dy
+
+    renderMeme()
+}
+
+function onMouseUp() {
+    isDragging = false
 }

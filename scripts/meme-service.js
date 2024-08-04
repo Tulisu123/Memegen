@@ -23,18 +23,7 @@ let gImgs = [
 let gMeme = {
     selectedImgId: 1,
     selectedLineIdx:0,
-    lines: [
-        {
-            txt:'Your text',
-            size:30,
-            lineColor:'black',
-            fillColor:'black',
-            pos:{
-                y:50,
-                x:0
-            }
-        }
-    ]
+    lines:[]
 }
 
 let gKeywordSearchCountMap = {'funny': 0, 'cat':16, 'baby':12}
@@ -70,6 +59,19 @@ function increaseFontSize(){
 
 function decreaseFontSize(){
     gMeme.lines[gMeme.selectedLineIdx].size -= 5
+}
+
+function alignLeft(){
+    gMeme.lines[gMeme.selectedLineIdx].pos.x -= 50
+}
+
+function alignRight(){
+    gMeme.lines[gMeme.selectedLineIdx].pos.x += 50
+}
+
+
+function alignCenter(center){
+    gMeme.lines[gMeme.selectedLineIdx].pos.x = center
 }
 
 function addLine(posX,posY,txt = 'Enter text'){
