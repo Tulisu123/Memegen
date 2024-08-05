@@ -1,0 +1,29 @@
+.saved-memes-container {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+.saved-memes-container img {
+    position: relative;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.saved-memes-container img:hover{
+    scale: 1.05;
+}
+
+.saved-memes-container img::before{
+    position: absolute;
+    content: 'X';
+    top: 0;
+    right: 0;
+    color: red;
+    opacity: 0;
+}
+.saved-memes-container img:hover::before {
+    opacity: 1; /* Show content on hover */
+}

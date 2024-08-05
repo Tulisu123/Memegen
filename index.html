@@ -57,18 +57,18 @@
                     <input type="color" id="fillInput" class="color-input" oninput="onChangeFillColor(this.value)">
                 </div>
                 <div class="row-four-container">
-                    <button class="save" onclick="saveMemeToLocalStorage()">Save</button>
+                    <button class="save" onclick="onSaveMeme()">Save</button>
                     <button class="share">Share</button>
                     <button class="download ">Download</button>
                 </div>
             </div>
         </section>
-
-        <section class="saved-meme display-none">
-            <div class="saved-memes-container grid">
-                <!-- Saved memes here content here -->
-            </div>
-        </section>
+    </section>
+    <section class="saved-meme display-none" onload="loadSavedMemes()">
+        <div class="saved-memes-container">
+            
+            <!-- Saved memes here content here -->
+        </div>
     </section>
 
     <script src="scripts/utils.js"></script>

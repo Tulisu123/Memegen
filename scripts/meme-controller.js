@@ -3,15 +3,15 @@
 let gCanvas
 let gCtx
 let gCenter
-
 let isDragging = false;
 let dragStartPos = { x: 0, y: 0 };
 let selectedLinePos = { x: 0, y: 0 };
+let gSavedMemes = loadMemeFromLocalStorage() || []
 
-
-function renderEditView(){
+function renderEditView() {
     gCanvas = document.querySelector('canvas')
     gCtx = gCanvas.getContext('2d')
+
     addDragListeners()
     addListeners()
     resizeCanvas()
@@ -21,9 +21,8 @@ function renderEditView(){
 
 function resizeCanvas() {
     const elContainer = document.querySelector('.canvas-container')
-    console.log('Container Size:', elContainer.clientWidth, elContainer.clientHeight);
 
-    gCanvas.width = elContainer.clientWidth 
+    gCanvas.width = elContainer.clientWidth
     gCanvas.height = elContainer.clientHeight
 }
 
@@ -35,17 +34,15 @@ function renderImage(imgSource) {
 }
 
 function renderMeme(removeMark = false) {
-    let meme = getMeme();
-    
+    let meme = getMeme()
     gCenter = { x: gCanvas.width / 2, y: gCanvas.height / 2 }
 
     let { url: imageUrl } = getImageById(meme.selectedImgId)
     let selectedLine = meme.lines[meme.selectedLineIdx]
-    
-    console.log('selected line:', selectedLine)
+
     renderImage(imageUrl);
     updateActions(selectedLine);
-    
+
     meme.lines.forEach((line) => {
         drawText(line);
     })
@@ -93,7 +90,7 @@ function onChangeSelectedLine() {
     renderMeme()
 }
 
-function updateActions(line){
+function updateActions(line) {
     document.querySelector('.row-one-container .input-text').value = line.txt
 }
 
@@ -109,8 +106,7 @@ function markSelectedLine(line) {
     const rectX = pos.x - textWidth / 2 - paddingX;
     const rectY = pos.y - fontSize / 2 - paddingY / 2;
     const rectWidth = textWidth + paddingX * 2;
-    const rectHeight = fontSize + paddingY 
-    console.log('marking . .. . . ')
+    const rectHeight = fontSize + paddingY
     gCtx.beginPath();
     gCtx.fillStyle = 'black';
     gCtx.strokeStyle = 'black';
@@ -147,19 +143,26 @@ function getPosY() {
 }
 
 function moveToGallery() {
+    resetMeme()
+    document.querySelector('.main-content').classList.remove('display-none');
     document.querySelector('.gallery-container').classList.remove('display-none');
     document.querySelector('.edit-view').classList.remove('display-block');
     document.querySelector('.edit-view').classList.add('display-none');
+    document.querySelector('.saved-meme').classList.add('display-none');
+}
+
+function resetMeme() {
+    let meme = getMeme()
+    meme.lines = []
 }
 
 function clearCanvas() {
-    console.log('c')
     gCtx.clearRect(0, 0, gCanvas.width, gCanvas.height)
 }
 
 function onAddLine() {
     let meme = getMeme()
-    meme.selectedLineIdx = meme.lines.length -1
+    meme.selectedLineIdx = meme.lines.length - 1
 
     const posX = gCanvas.width / 2
     const posY = getPosY()
@@ -187,17 +190,17 @@ function onDecreaseFont() {
     renderMeme()
 }
 
-function onAlignLeft(){
+function onAlignLeft() {
     alignLeft()
     renderMeme()
 }
 
-function onAlignCenter(){
-    alignCenter(gCanvas.width/2)
+function onAlignCenter() {
+    alignCenter(gCanvas.width / 2)
     renderMeme()
 }
 
-function onAlignRight(){
+function onAlignRight() {
     alignRight()
     renderMeme()
 }
@@ -207,7 +210,7 @@ function getLinePos(x, y) {
     for (let i = 0; i < meme.lines.length; i++) {
         let line = meme.lines[i];
 
-        console.log('line poses',line.pos.x, line.pos.y)
+        console.log('line poses', line.pos.x, line.pos.y)
 
         const textWidth = gCtx.measureText(line.txt).width;
         const padding = 10;
@@ -224,15 +227,15 @@ function getLinePos(x, y) {
     return null;
 }
 
-function addListeners(){
+function addListeners() {
     gCanvas.addEventListener('click', (event) => {
-        console.log(gCanvas.width,gCanvas.height)
-    
+        console.log(gCanvas.width, gCanvas.height)
+
         const gRect = gCanvas.getBoundingClientRect()
-    
+
         let mouseX = event.clientX - gRect.left
         let mouseY = event.clientY - gRect.top
-    
+
         const selectedLineIdx = getLinePos(mouseX, mouseY)
         console.log('selectedLine in listener', selectedLineIdx)
         if (selectedLineIdx !== null) {
@@ -240,19 +243,59 @@ function addListeners(){
             meme.selectedLineIdx = selectedLineIdx
             renderMeme();
 
-        }else{
+        } else {
             renderMeme(true)
         }
     })
 
-    window.addEventListener('resize',resizeCanvas())
+    window.addEventListener('resize', resizeCanvas())
 }
 
 
+////SAVED MEMES
 
+function onSaveMeme(){
+    renderMeme(true) //clearing the marked selected line
+    let meme = getMeme()
+    meme.dataUrl = gCanvas.toDataURL('image/png')
+
+    saveMemeToLocalStorage()
+}
+
+function moveToSavedMemes() {
+    // resetMeme()
+    document.querySelector('.main-content').classList.add('display-none')
+    document.querySelector('.saved-meme').classList.remove('display-none')
+
+    renderSavedMemes()
+}
+
+function renderSavedMemes() {
+    let elMemeContainter = document.querySelector('.saved-memes-container')
+    elMemeContainter.innerHTML = ''
+    gSavedMemes.forEach(meme =>{
+        let img = document.createElement('img')
+        img.src = meme.dataUrl
+        elMemeContainter.appendChild(img)
+    })
+}
+
+
+//////Local-storage
+function saveMemeToLocalStorage() {
+    let meme = getMeme()
+    let memeCopy = JSON.parse(JSON.stringify(meme))
+
+    gSavedMemes.push(memeCopy)
+    localStorage.setItem('meme', JSON.stringify(gSavedMemes))
+}
+
+function loadMemeFromLocalStorage() {
+    return  JSON.parse(localStorage.getItem('meme'))
+}
 
 /////dragging impl
-function addDragListeners(){
+function addDragListeners() {
     gCanvas.addEventListener('mousedown', onMouseDown)
     gCanvas.addEventListener('mousemove', onMouseMove)
     gCanvas.addEventListener('mouseup', onMouseUp)

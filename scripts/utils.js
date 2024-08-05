@@ -11,14 +11,3 @@ function getRandomId(length = 8) {
     
     return result;
 }
-
-function saveMemeToLocalStorage() {
-    let meme = getMeme()
-    localStorage.setItem('meme', JSON.stringify(meme))
-    loadMemeFromLocalStorage()
-}
-
-function loadMemeFromLocalStorage() {
-    let meme = JSON.parse(localStorage.getItem('meme'));
-    console.log(meme)
-}
