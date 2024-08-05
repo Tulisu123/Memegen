@@ -15,6 +15,7 @@ function onSelectImage(imgId) {
     document.querySelector('.gallery-container').classList.add('display-none');
     document.querySelector('.saved-meme').classList.add('display-none');
     document.querySelector('.edit-view').classList.remove('display-none');
+    document.querySelector('.main-content').classList.remove('display-none');
 
     let meme = getMeme()
     meme.selectedImgId = imgId

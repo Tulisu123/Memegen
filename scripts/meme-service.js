@@ -1,4 +1,5 @@
 'use strict'
+
 let gImgs = [
     {id: '1.jpg', url: 'images/1.jpg', keywords: ['funny', 'politics']},
     {id: '2.jpg', url: 'images/2.jpg', keywords: ['animal', 'cute']},
@@ -74,6 +75,10 @@ function alignRight(){
 
 function alignCenter(center){
     gMeme.lines[gMeme.selectedLineIdx].pos.x = center
+}
+
+function updateGmeme(savedMeme){
+    gMeme = JSON.parse(JSON.stringify(savedMeme))
 }
 
 function addLine(posX,posY,txt = 'Enter text'){
