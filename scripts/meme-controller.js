@@ -203,6 +203,16 @@ function onAlignRight() {
     renderMeme()
 }
 
+function onDownloadMeme(){
+    const dataUrl = gCanvas.toDataURL('image/png')
+    const link = document.createElement('a')
+    link.href = dataUrl
+    link.download = 'meme.png'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+}
+
 function getLinePos(x, y) {
     let meme = getMeme();
     for (let i = 0; i < meme.lines.length; i++) {
