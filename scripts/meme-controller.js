@@ -3,7 +3,6 @@
 let gCanvas = document.querySelector('canvas')
 let gCtx = gCanvas.getContext('2d')
 
-let gCenter
 let isDragging = false;
 let dragStartPos = { x: 0, y: 0 };
 let selectedLinePos = { x: 0, y: 0 };
@@ -283,17 +282,17 @@ function openSavedImageActions(meme, index) {
     let dialog = document.getElementById(`dialog${index}`)
     if (!dialog) {
         dialog = document.createElement('dialog')
-        dialog.id = `dialog${index}`;
+        dialog.id = `dialog${index}`
         // the json stringly is for using object inside an html function// Q: is there a better option?
         const strHtml = `
-            <button onclick='editSavedMeme(${JSON.stringify(meme).replace(/'/g, "\\'")})'>Edit</button>
+            <button onclick='editSavedMeme(${JSON.stringify(meme).replace(/'/g, "\\'")}, ${index})'>Edit</button>
             <button id="close-dialog" onclick="closeDialog('${index}')">Close</button>
-        `;
+        `
         dialog.innerHTML = strHtml;
         elMemeContainer.appendChild(dialog)
     }
 
-    dialog.showModal();
+    dialog.showModal()
 }
 
 function closeDialog(index){
@@ -303,12 +302,12 @@ function closeDialog(index){
 
 function editSavedMeme(savedMeme,index){
     console.log('meme in edit', savedMeme)
-    // closeDialog(index)
+    closeDialog(index)
 
     onSelectImage(savedMeme.selectedImgId)
     updateGmeme(savedMeme)
 
-    renderMeme()
+    renderEditView()
 }
 
 //////Local-storage
