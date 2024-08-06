@@ -46,7 +46,7 @@
                     <button class="text-left fa-solid fa-align-left" onclick="onAlignLeft()"></button>
                     <button class="text-middle fa-solid fa-align-center" onclick="onAlignCenter()"></button>
                     <button class="text-right fa-solid fa-align-right" onclick="onAlignRight()"></button>
-                    <select id="selectbar" name="selectbar">
+                    <select id="selectbar" name="selectbar" onchange="onChangeFont(this)">
                         <option value="impact">Impact</option>
                         <option value="arial">Arial</option>
                         <option value="times">Times new Roman</option>
@@ -59,7 +59,7 @@
                 <div class="row-four-container">
                     <button class="save" onclick="onSaveMeme()">Save</button>
                     <button class="share">Share</button>
-                    <button class="download" onclick="onDownloadMeme()">Download</button>
+                    <button class="download">Download</button>
                 </div>
             </div>
         </section>

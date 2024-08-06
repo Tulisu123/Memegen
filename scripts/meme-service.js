@@ -81,6 +81,10 @@ function updateGmeme(savedMeme){
     gMeme = JSON.parse(JSON.stringify(savedMeme))
 }
 
+function updateGmemeFont(selectedFont){
+    gMeme.lines[gMeme.selectedLineIdx].font = `${selectedFont}`
+}
+
 function addLine(posX,posY,txt = 'Enter text'){
     gMeme.selectedLineIdx++
     gMeme.lines.push({
@@ -88,6 +92,7 @@ function addLine(posX,posY,txt = 'Enter text'){
         size:30,
         lineColor:'black',
         fillColor:'black',
+        font:'impact',
         pos:{
             x: posX,
             y: posY

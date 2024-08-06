@@ -55,6 +55,7 @@ function drawText(line) {
     const txt = line.txt
     const lineColor = line.lineColor
     const fillColor = line.fillColor
+    const lineFont = line.font
 
     gCtx.beginPath()
 
@@ -65,7 +66,7 @@ function drawText(line) {
     gCtx.lineWidth = 1.5
     gCtx.textBaseline = 'middle'
     gCtx.textAlign = 'center'
-    gCtx.font = `${fontSize}px Arial`
+    gCtx.font = `${fontSize}px ${lineFont}`
 
     gCtx.strokeStyle = lineColor
     gCtx.fillStyle = fillColor
@@ -211,6 +212,13 @@ function onDownloadMeme(){
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
+}
+
+function onChangeFont(){
+    const selectElement = document.getElementById('selectbar')
+    const selectedFont = selectElement.value
+    updateGmemeFont(selectedFont)
+    renderMeme()
 }
 
 function getLinePos(x, y) {
