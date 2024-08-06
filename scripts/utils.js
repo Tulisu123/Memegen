@@ -11,3 +11,15 @@ function getRandomId(length = 8) {
     
     return result;
 }
+
+function saveMemeToLocalStorage() {
+    let meme = getMeme()
+    let memeCopy = JSON.parse(JSON.stringify(meme))
+
+    gSavedMemes.push(memeCopy)
+    localStorage.setItem('meme', JSON.stringify(gSavedMemes))
+}
+
+function loadMemeFromLocalStorage() {
+    return JSON.parse(localStorage.getItem('meme'))
+}

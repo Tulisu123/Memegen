@@ -8,6 +8,8 @@ let dragStartPos = { x: 0, y: 0 };
 let selectedLinePos = { x: 0, y: 0 };
 let gSavedMemes = loadMemeFromLocalStorage() || []
 
+let gIsEditingMeme = false
+
 function renderEditView() {
     addDragListeners()
     addListeners()
@@ -33,7 +35,6 @@ function renderImage(imgSource) {
 function renderMeme(removeMark = false) {
     let meme = getMeme()
 
-    console.log(meme)
     let { url: imageUrl } = getImageById(meme.selectedImgId)
     let selectedLine = meme.lines[meme.selectedLineIdx]
 
@@ -248,80 +249,6 @@ function addListeners() {
     window.addEventListener('resize', resizeCanvas())
 }
 
-
-////SAVED MEMES
-function onSaveMeme(){
-    renderMeme(true) //clearing the marked selected line
-    let meme = getMeme()
-    meme.dataUrl = gCanvas.toDataURL('image/png')
-
-    saveMemeToLocalStorage()
-}
-
-function moveToSavedMemes() {
-    document.querySelector('.main-content').classList.add('display-none')
-    document.querySelector('.saved-meme').classList.remove('display-none')
-
-    renderSavedMemes()
-}
-
-function renderSavedMemes() {
-    let elMemeContainter = document.querySelector('.saved-memes-container')
-    elMemeContainter.innerHTML = ''
-    gSavedMemes.forEach((meme,index) =>{
-        let img = document.createElement('img')
-        img.src = meme.dataUrl
-        img.onclick=function(){
-            openSavedImageActions(meme,index)
-        }
-        elMemeContainter.appendChild(img)
-    })
-}
-function openSavedImageActions(meme, index) {
-    const elMemeContainer = document.querySelector('.saved-memes-container')
-    let dialog = document.getElementById(`dialog${index}`)
-    if (!dialog) {
-        dialog = document.createElement('dialog')
-        dialog.id = `dialog${index}`
-        // the json stringly is for using object inside an html function// Q: is there a better option?
-        const strHtml = `
-            <button onclick='editSavedMeme(${JSON.stringify(meme).replace(/'/g, "\\'")}, ${index})'>Edit</button>
-            <button id="close-dialog" onclick="closeDialog('${index}')">Close</button>
-        `
-        dialog.innerHTML = strHtml;
-        elMemeContainer.appendChild(dialog)
-    }
-
-    dialog.showModal()
-}
-
-function closeDialog(index){
-    const dialog = document.querySelector(`#dialog${index}`)
-    dialog.close()
-}
-
-function editSavedMeme(savedMeme,index){
-    console.log('meme in edit', savedMeme)
-    closeDialog(index)
-
-    onSelectImage(savedMeme.selectedImgId)
-    updateGmeme(savedMeme)
-
-    renderEditView()
-}
-
-//////Local-storage
-function saveMemeToLocalStorage() {
-    let meme = getMeme()
-    let memeCopy = JSON.parse(JSON.stringify(meme))
-
-    gSavedMemes.push(memeCopy)
-    localStorage.setItem('meme', JSON.stringify(gSavedMemes))
-}
-
-function loadMemeFromLocalStorage() {
-    return  JSON.parse(localStorage.getItem('meme'))
-}
 
 /////dragging impl
 function addDragListeners() {

@@ -1,5 +1,4 @@
 'use strict'
-
 let gImgs = [
     {id: '1.jpg', url: 'images/1.jpg', keywords: ['funny', 'politics']},
     {id: '2.jpg', url: 'images/2.jpg', keywords: ['animal', 'cute']},
@@ -23,6 +22,7 @@ let gImgs = [
 
 
 let gMeme = {
+    id:getRandomId(),
     selectedImgId: 1,
     selectedLineIdx:0,
     dataUrl:'',
